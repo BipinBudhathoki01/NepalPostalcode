@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Postal Code - Nepal</title>
+    <link rel="stylesheet" href="./public/style.css">
+</head>
+<body>
+    <h1 class="hea">Pin Code Search</h1>
+    <input type="text" id="searchInput" placeholder="Enter District or Post Office Name">
+    <button onclick="searchDistrict()">Search</button>
+    <div id="result"></div>
+
+    <h2 class="hea">All Post Offices in the District</h2>
+    <ul id="postOfficeList"></ul>
+    <script>
+        async function fetchDistrictData(searchTerm) {
+            try {
+                const response = await fetch('./public/city.json'); // Replace './public/city.json' with the actual path to your JSON file
+                const jsonData = await response.json();
+                const filteredData = jsonData.filter(item => 
+                    item['District'].toLowerCase() === searchTerm.toLowerCase() ||
+                    item['Post Office'].toLowerCase() === searchTerm.toLowerCase()
+                );
+                return filteredData;
+            } catch (error) {
+                console.error('Error fetching JSON data:', error);
+                return null;
+            }
+        }
+
+        async function displayPostOffices(searchTerm) {
+            const postOfficeList = document.getElementById('postOfficeList');
+            postOfficeList.innerHTML = ''; // Clear previous results
+
+            const searchData = await fetchDistrictData(searchTerm);
+
+            if (searchData && searchData.length > 0) {
+                searchData.forEach(item => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `${item['Post Office']} - Pin Code: ${item['Postal']['Pin Code']}`;
+                    postOfficeList.appendChild(listItem);
+                });
+            } else {
+                postOfficeList.innerHTML = '<li class="no-data">No post offices or data found for the specified district or post office.</li>';
+            }
+        }
+        function searchDistrict() {
+            const searchInput = document.getElementById('searchInput').value.trim();
+            if (searchInput === '') {
+                alert('Please enter a district or post office name.');
+                return;
+            }
+
+            displayPostOffices(searchInput);
+        }
+    </script>
+</body>
+</html>
