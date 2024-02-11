@@ -7,12 +7,14 @@
     <link rel="stylesheet" href="./public/style.css">
 </head>
 <body>
+    <div class="container">
     <h1 class="hea">Pin Code Search</h1>
-    <input type="text" id="searchInput" placeholder="Enter District or Post Office Name">
+    <input type="text"   id="searchInput" placeholder="Enter District or Post Office Name" required>
     <button onclick="searchDistrict()">Search</button>
     <div id="result"></div>
 
     <h2 class="hea">All Post Offices in the District</h2>
+    </div>
     <ul id="postOfficeList"></ul>
     <script>
         async function fetchDistrictData(searchTerm) {
@@ -56,5 +58,10 @@
             displayPostOffices(searchInput);
         }
     </script>
+     <footer class="footer">
+        <div class="container">
+            <p class="footer-text">Designed and Developed with ❤️ by <a href="https://bipinbudhathoki.com.np/" target="_blank">Bipin Budhathoki</a></p>
+        </div>
+    </footer>
 </body>
 </html>
